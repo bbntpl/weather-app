@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Daily Weather Report</title>
+</head>
+
+<body class="rainy">
+	<header class='header'>
+		<div class='nav'>
+			<img src="./images/logo.svg" />
+			<form class="searchbar">
+				<input type="text" id="search-input" placeholder="Search location" />
+				<img src="./images/search.svg">
+			</form>
+		</div>
+	</header>
+	<div>
+		<main class="weather-data__screen">
+			<div class="weather-data-section" id="main-weather"></div>
+			<div class="weather-data-section" id="hourly-weather"></div>
+			<div class="weather-data-section" id="daily-weather"></div>
+		</main>
+		<footer>
+			<p class="copyright-statement"></p>
+		</footer>
+	</div>
+</body>
+<script>
+	// Insert copyright text within the footer content
+	const copyrightStatement = document.querySelector('.copyright-statement');
+	const footerText = `© B.B. Antipolo ${new Date().getFullYear()}`
+	copyrightStatement.textContent = footerText;
+</script>
+
+</html>

@@ -1,0 +1,4 @@
+const LOCATION_API_KEY = 'pk.960bef9b58caf12f4d456466ec2a42f8';
+const WEATHER_API_KEY = '0c73b72398c0bfc8c59ca8058faf1eb4';
+
+export { LOCATION_API_KEY, WEATHER_API_KEY };
