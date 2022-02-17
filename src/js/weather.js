@@ -1,37 +1,81 @@
-export async function getAreaFromCoordinates({ lat, lon }) {
-	const URL = `https://geocode.xyz/${lat},${lon}?json=1`;
-	try {
-		const response = await fetch(URL, { mode: 'cors' });
-		const data = await response.json();
-		return data;
-	} catch (error) {
-		return alert(`Error: ${error}`);
-	}
-}
+// module pattern that arranges the fetched data using API in
+// particular different uses
+const Weather = (() => {
+	const EXCLUDE = 'minutely';
+	const API_KEY = {
+		weather: '0c73b72398c0bfc8c59ca8058faf1eb4',
+		location: 'pk.960bef9b58caf12f4d456466ec2a42f8',
+	};
 
-export async function defaultLocation() {
-	// latitude and langitude of Barcelona, Spain
-	const lat = 41.39;
-	const lon = 2.15;
+	// default location after window loaded
+	let _lat = 41.39; 	// latitude and langitude of Barcelona, Spain
+	let _lon = 2.15;
+	let _searchArea;
+	let _areaName = 'Barcelona Area, Spain';
 
-	fetchData.setCoordinates(lat, lon);
-	fetchData.setAreaName('North Pole');
-	const data = await fetchData.getWeatherURL();
-	try {
-		await fetchWeatherData(data);
-	} catch (e) {
-		console.log(`Error: ${e}`);
-	}
-}
+	const setCoordinates = (nLat, nLon) => {
+		_lat = nLat;
+		_lon = nLon;
+	};
+	const setSearchArea = (v) => {
+		_searchArea = v;
+	};
+	const setAreaName = (v) => {
+		_areaName = v;
+	};
+	const getLat = () => _lat;
+	const getLon = () => _lon;
+	const getAreaName = () => _areaName;
+	const getWeatherURL = () => `https://api.openweathermap.org/data/2.5/onecall?lat=${_lat}&lon=${_lon}&exclude=${EXCLUDE}&appid=${API_KEY.weather}`;
+	const getLocationURL = () => `https://us1.locationiq.com/v1/search.php?key=${API_KEY.location}&q=${_searchArea}&format=json`;
+	const getWeatherIcon = (icon) => `http://openweathermap.org/img/wn/${icon}@4x.png`;
+	const fetchWeatherData = async () => {
+		try {
+			const response = await fetch(getWeatherURL(), { mode: 'cors' });
+			const weatherJson = await response.json();
+			return weatherJson;
+		} catch (error) {
+			throw new Error(error);
+		}
+	};
 
-function locationInput(areaInput) {
-	const str = `${areaInput.value}`;
+	// // get the user's current location
+	// async function getCoordinatesFromUser(pos) {
+	// 	const lat = pos.coords.latitude;
+	// 	const lon = pos.coords.longitude;
+	// 	const data = await fetchCoordinatesToGetArea(lat, lon);
+	// 	assignUserLocation(data);
+	// }
 
-	// replace the whitespaces with '+' as a parameter for api call
-	return str.split('').map((x) => (x === ' ' ? '+' : x)).join('');
-};
+	// // using the coordinates to get the proper area
+	// function fetchCoordinatesToGetArea(lat, lon) {
+	// 	fetchData.setCoordinates(lat, lon);
+	// 	return getAreaFromCoordinates({ lat, lon });
+	// }
 
-// display default
-window.onload = () => {
-	defaultLocation();
-};
+	// // assign the user's location as current
+	// async function assignUserLocation(data) {
+	// 	const areaName = locationNameByAPI(data);
+	// 	fetchData.setAreaName(areaName);
+	// 	try {
+	// 		await fetchWeatherData(fetchData.getWeatherURL());
+	// 	} catch (e) {
+	// 		console.log(`Error: ${e}`);
+	// 	}
+	// }
+
+	return {
+		setCoordinates,
+		setSearchArea,
+		setAreaName,
+		getLat,
+		getLon,
+		getAreaName,
+		getWeatherIcon,
+		getWeatherURL,
+		getLocationURL,
+		fetchWeatherData,
+	};
+})();
+
+export default Weather;

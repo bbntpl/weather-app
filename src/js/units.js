@@ -19,6 +19,8 @@ const toggleTemp = () => {
 	isTempCelcius = !isTempCelcius;
 };
 
+const currentUnitIsCelcius = () => isTempCelcius;
+
 // translate from kelvin to celcius
 const kelvinToCelcius = (K) => {
 	const celcius = K - 273.15;
@@ -52,6 +54,7 @@ const windDegToDir = (n) => {
 
 export {
 	checkTempUnit,
+	currentUnitIsCelcius,
 	toggleTemp,
 	convertTemp,
 	windSpeedToMPH,

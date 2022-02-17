@@ -15,10 +15,13 @@
 		<header class='header'>
 			<div class='nav'>
 				<img id="logo" src="./images/logo.svg" />
-				<form class="searchbar">
-					<input type="text" id="searchbar__input" placeholder="Search location" />
-					<img id="search-icon" src="./images/search.svg">
-				</form>
+				<div class="location-options">
+					<img id="location-icon" src="./images/map-marker.svg" />
+					<form class="searchbar">
+						<input type="text" id="searchbar__input" placeholder="Search location" />
+						<img id="search-icon" src="./images/search.svg">
+					</form>
+				</div>
 			</div>
 		</header>
 		<div class="weather-data__grid">
@@ -27,10 +30,10 @@
 					<h1 class="weather-data-label">Current Weather</h1>
 					<div class="weather-data-section weather-current-card">
 						<div class="current-info">
-							<header class="current__location">Jacksonville, North Carolina South Carolina </header>
+							<header class="current__location"></header>
 							<div class="current-primary-details">
-								<h2 class="current__time">13:51:00</h2>
-								<h2 class="current__date">Wed, February 16</h2>
+								<h2 class="current__time"></h2>
+								<h2 class="current__date"></h2>
 								<div class="unit">
 									<label for="cel">°C</label>
 									<input type="radio" id="cel" name="unit" checked>
@@ -40,9 +43,9 @@
 								</div>
 							</div>
 						</div>
-						<h1 class="current__temp">- 31</h1>
+						<h1 class="current__temp"></h1>
 						<div class="current-additional-info">
-							<dl>
+							<!-- <dl>
 								<dt>FEELS LIKE</dt>
 								<dd>-35°C</dd>
 							</dl>
@@ -77,35 +80,19 @@
 							<dl>
 								<dt>FEELS LIKE</dt>
 								<dd>-35°C</dd>
-							</dl>
+							</dl> -->
 						</div>
 					</div>
 				</div>
 				<div id="hourly-weather">
-					<h1 class="weather-data-label">Nextt 12 hours</h1>
+					<h1 class="weather-data-label">Next 24 hours</h1>
 					<div id="weather-hourly-container">
-						<div class="weather-data-section weather-hourly-card">
-							<div class="hourly__hour">9am</div>
-							<div class="hourly__details">
-								<dl>
-									<dt>feels like: </dt>
-									<dd>35°C</dd>
-								</dl>
-								<dl>
-									<dt>temp: </dt>
-									<dd>-45°C</dd>
-								</dl>
-							</div>
-							<div class="hourly__weather-icon">
-								<img />
-							</div>
-						</div>
 					</div>
 				</div>
 				<div id="daily-weather">
 					<h1 class="weather-data-label">Next 7 days</h1>
 					<div id="weather-daily-container">
-						<div class="weather-data-section weather-daily-card">
+						<!-- <div class="weather-data-section weather-daily-card">
 							<h2 class="daily__date">Wed, Feb 17</h2>
 							<dl class="daily__temp">
 								<dt>temp</dt>
@@ -118,7 +105,7 @@
 							<div>
 								<img class="weather-icon" />
 							</div>
-						</div>
+						</div> -->
 					</div>
 				</div>
 			</main>

@@ -8,7 +8,7 @@ const HourlyCard = (() => ({
 	hourlyDetails(feelsLike, temp) {
 		const hourlyDetails = createCustomElement('div', 'hourly__details');
 		const descListFeelsLike = createDataList('feels like', feelsLike);
-		const descListTemp = createDataList('feels like', temp);
+		const descListTemp = createDataList('temp', temp);
 
 		appendChildren(hourlyDetails, [descListFeelsLike, descListTemp]);
 

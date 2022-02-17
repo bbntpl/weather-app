@@ -58,6 +58,13 @@ async function loadJson(url) {
 	throw new Error(response);
 }
 
+function whitespaceReplacer(string, char) {
+	const newString = string;
+
+	// replace the whitespaces with '+' as a parameter for api call
+	return newString.split('').map((x) => (x === ' ' ? char : x)).join('');
+};
+
 export {
 	appendChildren,
 	childrenMatches,
@@ -65,4 +72,5 @@ export {
 	createDataList,
 	removeChildren,
 	loadJson,
+	whitespaceReplacer,
 };

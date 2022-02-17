@@ -1,3 +1,5 @@
+import Weather from './weather';
+
 // convert dates by the appropriate local timezone
 // object used to format dates
 const OPTIONS = {
@@ -17,6 +19,11 @@ function convertTZ(date, tzString) {
 	return new Date((typeof date === 'string' ? new Date(date) : date).toLocaleString('en-US', { timeZone: tzString }));
 }
 
+function getLocalDate(timezone, dateIndex, skipDateIndex) {
+	const date = new Date(); // get todays date
+	date.setDate(date.getDate() + (dateIndex + skipDateIndex)); // accumulate date by one
+	return convertTZ(date, timezone);
+}
 // format time to HH:MM:SS AM/PM
 function formatHourMin(date) {
 	let hours = date.getHours();
@@ -62,6 +69,16 @@ const getLocalHours = (date) => date.getHours();
 const formatFullDate = (date) => date.toLocaleDateString('en-US', OPTIONS);
 const formatShortDate = (date) => date.toLocaleDateString('en-US', DAILY);
 
+const updateClock = (el) => {
+	const clockDisplay = el;
+	const { timezone } = Weather.fetchWeatherData();
+	const date = convertTZ(new Date(), timezone);
+	clockDisplay.textContent = formatHourMin(date);
+	setTimeout(() => {
+		updateClock(clockDisplay);
+	}, 1000);
+};
+
 export {
 	convertTZ,
 	formatHourMin,
@@ -69,4 +86,6 @@ export {
 	formatFullDate,
 	formatShortDate,
 	getLocalHours,
+	getLocalDate,
+	updateClock,
 };

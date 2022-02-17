@@ -34,6 +34,7 @@ module.exports = {
 				{ from: './src/images/logo.svg', to: './images' },
 				{ from: './src/images/search.svg', to: './images' },
 				{ from: './src/images/favicon.ico', to: './images' },
+				{ from: './src/images/map-marker.svg', to: './images' },
 			],
 		}),
 	],
