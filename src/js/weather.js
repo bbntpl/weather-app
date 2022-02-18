@@ -1,68 +1,101 @@
+import { whitespaceReplacer, hasSpaces, loadJson } from '../helpers';
+
 // module pattern that arranges the fetched data using API in
 // particular different uses
 const Weather = (() => {
 	const EXCLUDE = 'minutely';
 	const API_KEY = {
-		weather: '0c73b72398c0bfc8c59ca8058faf1eb4',
+		weather: 'b7b662c012c9a543f516463171c79440',
 		location: 'pk.960bef9b58caf12f4d456466ec2a42f8',
 	};
 
 	// default location after window loaded
-	let _lat = 41.39; 	// latitude and langitude of Barcelona, Spain
-	let _lon = 2.15;
-	let _searchArea;
-	let _areaName = 'Barcelona Area, Spain';
+	let weatherData;
+	let lat = 41.39; 	// latitude and langitude of Barcelona, Spain
+	let lon = 2.15;
+	let searchArea;
+	let areaName = 'Barcelona Area, Spain';
 
 	const setCoordinates = (nLat, nLon) => {
-		_lat = nLat;
-		_lon = nLon;
+		lat = nLat;
+		lon = nLon;
 	};
+
 	const setSearchArea = (v) => {
-		_searchArea = v;
+		searchArea = v;
 	};
+
 	const setAreaName = (v) => {
-		_areaName = v;
+		areaName = v;
 	};
-	const getLat = () => _lat;
-	const getLon = () => _lon;
-	const getAreaName = () => _areaName;
-	const getWeatherURL = () => `https://api.openweathermap.org/data/2.5/onecall?lat=${_lat}&lon=${_lon}&exclude=${EXCLUDE}&appid=${API_KEY.weather}`;
-	const getLocationURL = () => `https://us1.locationiq.com/v1/search.php?key=${API_KEY.location}&q=${_searchArea}&format=json`;
-	const getWeatherIcon = (icon) => `http://openweathermap.org/img/wn/${icon}@4x.png`;
+
+	const setLocationName = (locationName) => {
+		setSearchArea(whitespaceReplacer(locationName));
+		setAreaName(locationName);
+	};
+
+	const setWeatherData = (data) => {
+		weatherData = data;
+	};
+
+	const getWeatherData = () => weatherData;
+
+	const getLat = () => lat;
+
+	const getLon = () => lon;
+
+	const getAreaName = () => areaName;
+
+	const getWeatherURL = () => `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=${EXCLUDE}&appid=${API_KEY.weather}`;
+
+	const getLocationURL = () => `https://us1.locationiq.com/v1/search.php?key=${API_KEY.location}&q=${searchArea}&format=json`;
+
+	const getGeocodeURL = () => `https://geocode.xyz/${lat},${lon}?json=1`;
+
+	const getWeatherIcon = (icon) => `http://openweathermap.org/img/wn/${icon}@2x.png`;
+
 	const fetchWeatherData = async () => {
-		try {
-			const response = await fetch(getWeatherURL(), { mode: 'cors' });
-			const weatherJson = await response.json();
-			return weatherJson;
-		} catch (error) {
-			throw new Error(error);
+		loadJson(getWeatherURL())
+			.then((openWeather) => setWeatherData(openWeather))
+			.catch((error) => {
+				throw new Error(error);
+			});
+	};
+
+	const assignUserLocation = (data) => {
+		const isCityExists = data.city && hasSpaces(data.city);
+		const isStateExists = data.hasOwnProperty('state') || typeof data.state !== 'object';
+		// make sure city does not have any space and state is not an object
+		if (isCityExists && isStateExists) {
+			setAreaName(`${data.city}, ${data.state}`);
+			if (typeof data.state === 'object' && data.prov) {
+				setAreaName(`${data.city}, ${data.prov}`);
+			}
+		} else if (data.staddress && data.state) {
+			setAreaName(`${data.staddress}, ${data.state}`);
+		} else if (data.prov) {
+			setAreaName(`${data.staddress}, ${data.prov}`);
+		} else {
+			setAreaName(data.region);
 		}
 	};
 
-	// // get the user's current location
-	// async function getCoordinatesFromUser(pos) {
-	// 	const lat = pos.coords.latitude;
-	// 	const lon = pos.coords.longitude;
-	// 	const data = await fetchCoordinatesToGetArea(lat, lon);
-	// 	assignUserLocation(data);
-	// }
+	const getAreaFromCoordinates = async () => {
+		loadJson(getGeocodeURL())
+			.then((location) => {
+				assignUserLocation(location);
+			})
+			.catch((error) => {
+				throw new Error(`Error: ${error}`);
+			});
+	};
 
-	// // using the coordinates to get the proper area
-	// function fetchCoordinatesToGetArea(lat, lon) {
-	// 	fetchData.setCoordinates(lat, lon);
-	// 	return getAreaFromCoordinates({ lat, lon });
-	// }
-
-	// // assign the user's location as current
-	// async function assignUserLocation(data) {
-	// 	const areaName = locationNameByAPI(data);
-	// 	fetchData.setAreaName(areaName);
-	// 	try {
-	// 		await fetchWeatherData(fetchData.getWeatherURL());
-	// 	} catch (e) {
-	// 		console.log(`Error: ${e}`);
-	// 	}
-	// }
+	// using the coordinates to get the proper area
+	const fetchCoordinatesToGetArea = (pos) => {
+		const { latitude, longitude } = pos.coords;
+		setCoordinates(latitude, longitude);
+		getAreaFromCoordinates();
+	};
 
 	return {
 		setCoordinates,
@@ -71,10 +104,13 @@ const Weather = (() => {
 		getLat,
 		getLon,
 		getAreaName,
+		getWeatherData,
 		getWeatherIcon,
 		getWeatherURL,
 		getLocationURL,
+		fetchCoordinatesToGetArea,
 		fetchWeatherData,
+		setLocationName,
 	};
 })();
 

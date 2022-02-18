@@ -75,7 +75,7 @@ const updateClock = (el) => {
 	const date = convertTZ(new Date(), timezone);
 	clockDisplay.textContent = formatHourMin(date);
 	setTimeout(() => {
-		updateClock(clockDisplay);
+		updateClock(el);
 	}, 1000);
 };
 

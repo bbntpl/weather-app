@@ -9,25 +9,27 @@ import {
 } from './js/view';
 
 // EVENT LISTENERS
-// DOM.locationIcon.onclick = () => {
-// 	if (navigator.geolocation) {
-// 		navigator.geolocation.getCurrentPosition(getCoordinatesFromUser);
-// 	} else {
-// 		throw new Error('Geolocation is not supported by this browser');
-// 	}
-// };
+DOM.locationIcon.onclick = () => {
+	if (navigator.geolocation) {
+		navigator.geolocation.getCurrentPosition(Weather.fetchCoordinatesToGetArea);
+		displayWeatherData();
+	} else {
+		throw new Error('Geolocation is not supported by this browser');
+	}
+};
 
 window.onload = () => {
 	displayWeatherData();
 };
 
-// export async function getAreaFromCoordinates({ lat, lon }) {
-// 	const URL = `https://geocode.xyz/${lat},${lon}?json=1`;
-// 	try {
-// 		const response = await fetch(URL, { mode: 'cors' });
-// 		const data = await response.json();
-// 		return data;
-// 	} catch (error) {
-// 		return alert(`Error: ${error}`);
-// 	}
-// }
+DOM.searchbar.addEventListener('submit', (e) => {
+	if (!DOM.searchbar.value) return;
+	e.preventDefault();
+	Weather.setLocationName(DOM.searchbar.value);
+});
+
+DOM.searchbarIcon.addEventListener('click', (e) => {
+	if (!DOM.searchbar.value) return;
+	e.preventDefault();
+	Weather.setLocationName(DOM.searchbar.value);
+});

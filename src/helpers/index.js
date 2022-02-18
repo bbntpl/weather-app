@@ -51,7 +51,7 @@ function childrenMatches(elem, callback) {
 }
 
 async function loadJson(url) {
-	const response = await fetch(url);
+	const response = await fetch(url, { mode: 'cors' });
 	if (response.status === 200) {
 		return response.json();
 	}
@@ -63,13 +63,17 @@ function whitespaceReplacer(string, char) {
 
 	// replace the whitespaces with '+' as a parameter for api call
 	return newString.split('').map((x) => (x === ' ' ? char : x)).join('');
-};
+}
+
+// disallow any spaces
+const hasSpaces = (str) => !!str.indexOf(' ') !== -1;
 
 export {
 	appendChildren,
 	childrenMatches,
 	createCustomElement,
 	createDataList,
+	hasSpaces,
 	removeChildren,
 	loadJson,
 	whitespaceReplacer,

@@ -17,7 +17,7 @@ const DailyCard = (() => ({
 		} = params;
 		const dailyCardClassNames = ['weather-data-section', 'weather-daily-card'];
 		const dailyCard = createCustomElement('div', dailyCardClassNames);
-		const dailyDate = createCustomElement('div', dailyCardClassNames, { textContent: date });
+		const dailyDate = createCustomElement('div', 'daily__date', { textContent: date });
 		const dailyFeelsLike = createDataList('feels like', feelsLike);
 		const dailyTemp = createDataList('temp', temp);
 		appendChildren(
