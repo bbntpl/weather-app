@@ -18,7 +18,7 @@ A simple weather app built with JavaScript, HTML and SCSS.
 
 - Photo by [Felipe Palacio](https://unsplash.com/@swifteagle?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText) on [Unsplash](https://unsplash.com/collections/1445644/weather?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText)
 
-- Photo by [Raimond Klavins](https://unsplash.com/@raimondklavins?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText) on [Unsplash](https://unsplash.com/s/photos/sunlight?utm_source=unsplash&utm_m
+- Photo by [Raimond Klavins](https://unsplash.com/@raimondklavins?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText) on [Unsplash](https://unsplash.com/s/photos/sunlight?utm_source=unsplash&utm_m)
 
 - Photo by [guille pozzi](https://unsplash.com/@guillepozzi?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText) on [Unsplash](https://unsplash.com/s/photos/snow-night?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText)
 
