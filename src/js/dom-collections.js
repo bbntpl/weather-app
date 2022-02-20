@@ -1,9 +1,13 @@
 const DOM = (() => ({
+	header: document.querySelector('.header'),
+	content: document.getElementById('content'),
+	loading: document.getElementById('loading'),
+
 	// DOM instances of header elements
 	locationIcon: document.getElementById('location-icon'),
 	searchbar: document.querySelector('.searchbar'),
 	searchbarInput: document.getElementById('searchbar__input'),
-	searchbarIcon: document.getElementById('search-icon'),
+	searchbarBtn: document.querySelector('.search-btn'),
 
 	// DOM instances of current weather component
 	currentLocation: document.querySelector('.current__location'),

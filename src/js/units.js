@@ -36,27 +36,28 @@ const kelvinToFahrenheit = (K) => {
 const convertTemp = (t) => (isTempCelcius === true ? kelvinToCelcius(t) : kelvinToFahrenheit(t));
 
 // meter/second to meter per hour
-const windSpeedToMPH = (n) => Math.round(n * 2.237);
+const windSpeedToMPH = (n) => `${Math.round(n * 2.237)}mph`;
+const convertMeterToKilometer = (m) => `${Math.round((m / 1000) * 10) / 10}km`;
 
 // replace the 0 - 360 degree with N,E,W,S
 const windDegToDir = (n) => {
-	let directionNumber = n;
-	if (directionNumber > 349) {
-		directionNumber = 0;
+	let dirNum = n;
+	if (dirNum > 349) {
+		dirNum = 0;
 	}
-	const directionRange = (_, i) => {
-		const newIndex = (i + DIRECTIONS.length) % DIRECTIONS.length;
-		return directionNumber > RANGE[i] || directionNumber < RANGE[newIndex + 1];
+	const directionRange = (_, i, arr) => {
+		const wrappedIndex = (i + 1) % arr.length;
+		return dirNum >= RANGE[i] || dirNum <= RANGE[wrappedIndex];
 	};
-	const directionIndex = DIRECTIONS.findIndex(directionRange);
-	return DIRECTIONS[directionIndex];
+	return DIRECTIONS.find(directionRange);
 };
-
 export {
+	convertMeterToKilometer,
 	checkTempUnit,
 	currentUnitIsCelcius,
 	toggleTemp,
 	convertTemp,
+	kelvinToFahrenheit,
 	windSpeedToMPH,
 	windDegToDir,
 };

@@ -8,22 +8,28 @@
 	<title>
 		<%= htmlWebpackPlugin.options.title %>
 	</title>
+	<link rel="icon" href=<%=htmlWebpackPlugin.options.favicon %> >
 </head>
 
 <body>
-	<div id="content" class="rainy">
-		<header class='header'>
+	<div id="content">
+		<header class='header nav-dark'>
 			<div class='nav'>
 				<img id="logo" src="./images/logo.svg" />
 				<div class="location-options">
 					<img id="location-icon" src="./images/map-marker.svg" />
 					<form class="searchbar">
 						<input type="text" id="searchbar__input" placeholder="Search location" />
-						<img id="search-icon" src="./images/search.svg">
+						<button class="search-btn">
+							<img id="search-icon" src="./images/search.svg">
+						</button>
 					</form>
 				</div>
 			</div>
 		</header>
+		<div id="loading">
+			<img id="loading-icon" src="./images/loading.gif">
+		</div>
 		<div class="weather-data__grid">
 			<main class="weather-data__screen">
 				<div id="current-weather">

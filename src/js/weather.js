@@ -1,11 +1,12 @@
 import { whitespaceReplacer, hasSpaces, loadJson } from '../helpers';
+import DOM from './dom-collections';
 
 // module pattern that arranges the fetched data using API in
 // particular different uses
 const Weather = (() => {
 	const EXCLUDE = 'minutely';
 	const API_KEY = {
-		weather: 'b7b662c012c9a543f516463171c79440',
+		weather: 'fa65f5a4f35f8c9a4cd735a6794af915',
 		location: 'pk.960bef9b58caf12f4d456466ec2a42f8',
 	};
 
@@ -14,7 +15,7 @@ const Weather = (() => {
 	let lat = 41.39; 	// latitude and langitude of Barcelona, Spain
 	let lon = 2.15;
 	let searchArea;
-	let areaName = 'Barcelona Area, Spain';
+	let areaName = 'Barcelona, Spain';
 
 	const setCoordinates = (nLat, nLon) => {
 		lat = nLat;
@@ -52,19 +53,22 @@ const Weather = (() => {
 
 	const getGeocodeURL = () => `https://geocode.xyz/${lat},${lon}?json=1`;
 
-	const getWeatherIcon = (icon) => `http://openweathermap.org/img/wn/${icon}@2x.png`;
+	const getWeatherIcon = (icon, size) => `http://openweathermap.org/img/wn/${icon}@${size}.png`;
 
 	const fetchWeatherData = async () => {
-		loadJson(getWeatherURL())
+		const response = loadJson(getWeatherURL());
+		response
 			.then((openWeather) => setWeatherData(openWeather))
 			.catch((error) => {
 				throw new Error(error);
 			});
+
+		return response;
 	};
 
 	const assignUserLocation = (data) => {
 		const isCityExists = data.city && hasSpaces(data.city);
-		const isStateExists = data.hasOwnProperty('state') || typeof data.state !== 'object';
+		const isStateExists = data.state || typeof data.state !== 'object';
 		// make sure city does not have any space and state is not an object
 		if (isCityExists && isStateExists) {
 			setAreaName(`${data.city}, ${data.state}`);
@@ -97,10 +101,16 @@ const Weather = (() => {
 		getAreaFromCoordinates();
 	};
 
+	function displayWeatherDataByInput() {
+		const locationName = DOM.searchbarInput.value;
+		if (!locationName) return;
+		fetchWeatherData();
+	}
+
 	return {
-		setCoordinates,
-		setSearchArea,
-		setAreaName,
+		displayWeatherDataByInput,
+		fetchCoordinatesToGetArea,
+		fetchWeatherData,
 		getLat,
 		getLon,
 		getAreaName,
@@ -108,9 +118,10 @@ const Weather = (() => {
 		getWeatherIcon,
 		getWeatherURL,
 		getLocationURL,
-		fetchCoordinatesToGetArea,
-		fetchWeatherData,
 		setLocationName,
+		setCoordinates,
+		setSearchArea,
+		setAreaName,
 	};
 })();
 

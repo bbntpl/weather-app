@@ -27,14 +27,11 @@ module.exports = {
 		new HtmlWebpackPlugin({
 			title: 'Daily Weather Report',
 			template: './src/template.html',
-			favicon: './src/images/favicon.ico',
+			favicon: './src/images/icons/favicon.ico',
 		}),
 		new CopyPlugin({
 			patterns: [
-				{ from: './src/images/logo.svg', to: './images' },
-				{ from: './src/images/search.svg', to: './images' },
-				{ from: './src/images/favicon.ico', to: './images' },
-				{ from: './src/images/map-marker.svg', to: './images' },
+				{ from: './src/images/icons', to: './images' },
 			],
 		}),
 	],

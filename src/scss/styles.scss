@@ -1,17 +1,16 @@
 /***** GLOBAL VARIABLES *****/
-
 //fonts
 $default-font: "Ubuntu", monospace, sans-serif;
 
 //colors
+$color-cod-gray: #1c1c1c;
+$filtered-dove-gray: invert(36%) sepia(81%) saturate(9%) hue-rotate(351deg) brightness(94%) contrast(86%);
 $filtered-aliceblue: invert(94%) sepia(57%) saturate(4093%) hue-rotate(178deg) brightness(109%) contrast(108%);
-//margins or paddings
-$o-wrapped: 0 50px; //padding alignment for all of the contents
 
 $breakpoints: (
-	2000px: 0 50px,
-	740px: 0 20px,
-	420px: 0 10px,
+	2000px: 1.2rem 50px,
+	740px: 1rem 15px,
+	420px: 0.5rem 5px,
 );
 
 * {
@@ -23,9 +22,29 @@ body {
 	font-size: 16px;
 }
 
-#content{
-	min-height: 100vh;
-	height: auto;
+dl {
+	text-align: center;
+	* {
+		padding: 0.2rem 0;
+	}
+	dt {
+		font: normal bold;
+		font-size: clamp(1rem, 1vw, 2rem);
+	}
+
+	dd {
+		font-weight: 300;
+		font-size: clamp(1.5rem, 1.5vw, 3rem);
+	}
+}
+
+@each $width, $padding in $breakpoints {
+	@media screen and (max-width: $width) {
+		.header,
+		.weather-data__grid {
+			padding: $padding;
+		}
+	}
 }
 
 /***** REUSABLE STYLES *****/
@@ -41,11 +60,91 @@ body {
 	background-size: cover;
 }
 
-// HERO IMAGES - WEATHER
-.rainy {
+.hide {
+	display: none;
+}
+
+.nav-glassy {
+	background: rgba(196, 196, 196, 0.144);
+	box-shadow: inset 50.9px -50.9px 50.9px rgba(149, 149, 149, 0.144),
+		inset -50.9px 50.9px 50.9px rgba(255, 255, 255, 0.144);
+	backdrop-filter: blur(48.864px);
+}
+
+.nav-dark {
+	background-color: $color-cod-gray;
+}
+
+// HERO IMAGES - TIME AND WEATHER
+.rain {
 	background: linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)),
-		url("../images/weather/night.jpg") no-repeat center center fixed;
+		url("../images/weather/rain.jpg") no-repeat center center fixed;
 	@include bg-cover();
+}
+
+.thunderstorm {
+	background: linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)),
+		url("../images/weather/thunderstorm.jpg") no-repeat center center fixed;
+	@include bg-cover();
+}
+
+.morning-clear {
+	background: linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)),
+		url("../images/weather/morning/clear.jpg") no-repeat center center fixed;
+	@include bg-cover();
+}
+
+.morning-cloud {
+	background: linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)),
+		url("../images/weather/morning/cloud.jpg") no-repeat center center fixed;
+	@include bg-cover();
+}
+
+.morning-snow {
+	background: linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)),
+		url("../images/weather/morning/snow.jpg") no-repeat center center fixed;
+	@include bg-cover();
+}
+
+.afternoon-clear {
+	background: linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)),
+		url("../images/weather/afternoon/clear.jpg") no-repeat center center fixed;
+	@include bg-cover();
+}
+
+.afternoon-cloud {
+	background: linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)),
+		url("../images/weather/afternoon/cloud.jpg") no-repeat center center fixed;
+	@include bg-cover();
+}
+
+.afternoon-snow {
+	background: linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)),
+		url("../images/weather/afternoon/snow.jpg") no-repeat center center fixed;
+	@include bg-cover();
+}
+
+.night-clear {
+	background: linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)),
+		url("../images/weather/night/clear.jpg") no-repeat center center fixed;
+	@include bg-cover();
+}
+
+.night-cloud {
+	background: linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)),
+		url("../images/weather/night/cloud.jpg") no-repeat center center fixed;
+	@include bg-cover();
+}
+
+.night-snow {
+	background: linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)),
+		url("../images/weather/night/snow.jpg") no-repeat center center fixed;
+	@include bg-cover();
+}
+
+#content {
+	min-height: 100vh;
+	height: auto;
 }
 
 // HEADER
@@ -53,11 +152,10 @@ body {
 	width: 100%;
 	min-height: 68px;
 	height: max-content;
-	padding: $o-wrapped;
-	background: rgba(196, 196, 196, 0.144);
 	box-shadow: inset 50.9px -50.9px 50.9px rgba(149, 149, 149, 0.144),
 		inset -50.9px 50.9px 50.9px rgba(255, 255, 255, 0.144);
 	backdrop-filter: blur(48.864px);
+	position: sticky;
 	.nav {
 		@media screen and (max-width: 420px) {
 			justify-content: center;
@@ -71,7 +169,7 @@ body {
 		& > * {
 			margin: 5px 0;
 		}
-		.location-options{
+		.location-options {
 			display: flex;
 			align-items: center;
 			gap: 1rem;
@@ -99,14 +197,19 @@ body {
 	outline: none;
 }
 
-#location-icon{
+#location-icon {
 	filter: $filtered-aliceblue;
 }
 
-#search-icon, #location-icon {
+#search-icon,
+#location-icon {
 	cursor: pointer;
 }
 
+.search-btn {
+	background: transparent;
+	border: 0;
+}
 #logo {
 	@media screen and (max-width: 420px) {
 		width: 100%;
@@ -115,10 +218,25 @@ body {
 }
 
 /***** WEATHER DATA *****/
-.weather-data__grid {
+.weather-data__grid,
+#loading {
 	min-height: calc(100vh - 60px);
 	height: inherit;
-	padding: 2rem 50px;
+}
+
+#loading {
+	z-index: 1000;
+	background-color: #fff;
+	position: relative;
+}
+
+#loading-icon {
+	width: 30px;
+	height: 30px;
+	position: absolute;
+	top: 10%;
+	left: 50%;
+	transform: translate(-50%, -50%);
 }
 
 // set the height of the weather data containers
@@ -132,36 +250,36 @@ body {
 	@media screen and (max-width: 740px) {
 		display: flex;
 		flex-direction: column;
-		gap: 20px;
+		gap: 3rem;
 	}
 
 	display: grid;
-	grid-template-columns: repeat(7, minmax(0, 1fr));
-	grid-template-rows: minmax(0, min-content) minmax(0, min-content);
+	grid-template-columns: repeat(8, minmax(0, 1fr));
+	grid-template-rows: repeat(4, minmax(0, fit-content));
 	grid-gap: 20px;
 	height: auto;
 	width: 100%;
 
 	#current-weather {
-		grid-column: 1 / 5;
+		grid-column: 1 / 6;
 		grid-row: 1 / 2;
 	}
 
 	#hourly-weather {
-		grid-column: 5 / 8;
-		grid-row: 1 / 2;
+		grid-column: 6 / 9;
+		grid-row: 1 / 3;
 	}
 
 	#daily-weather {
-		grid-column: 1 / 8;
-		grid-row: 2 / 3;
+		grid-column: 1 / 6;
+		grid-row: 2 / 4;
 	}
 }
 
 .weather-data-label {
 	text-shadow: -1px -1px rgb(67, 67, 67);
 	margin-bottom: 8px;
-	font-size: clamp(1rem, 1.5vw, 2rem);
+	font-size: clamp(1rem, 1.4vw, 2rem);
 	color: #fff;
 }
 
@@ -191,7 +309,7 @@ body {
 	.current-primary-details {
 		grid-column: 1 / 5;
 		* {
-			font-size: clamp(1.5rem, 1.7vw, 2.8rem);
+			font-size: clamp(1.3rem, 1.5vw, 2.6rem);
 			line-height: 1.3;
 		}
 	}
@@ -199,7 +317,7 @@ body {
 
 .current__temp {
 	text-align: center;
-	font-size: clamp(4rem, 12vw, 7.5rem);
+	font-size: clamp(3.8rem, 9vw, 7rem);
 	margin: 3rem 0;
 }
 
@@ -214,26 +332,9 @@ body {
 	justify-content: space-between;
 	overflow-x: auto;
 	overflow-y: hidden;
-
-	dl {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		line-height: 1.5;
-		width: auto;
-		white-space: nowrap;
-	}
-
-	dt {
-		font: normal bold;
-		font-size: clamp(1.2rem, 1.2vw, 2.4rem);
-		text-transform: uppercase;
-	}
-
-	dd {
-		font: normal 300;
-		font-size: clamp(2rem, 2.8vw, 4rem);
-	}
+	text-transform: uppercase;
+	align-items: center;
+	justify-content: flex-start;
 }
 
 .unit {
@@ -299,9 +400,9 @@ body {
 .weather-hourly-card {
 	padding: 0.5rem;
 	display: grid;
-	grid-template-columns: 1fr 1fr 2fr;
+	grid-template-columns: 1fr 2fr 1fr;
 	grid-auto-flow: column;
-	align-items: flex-start;
+	align-items: center;
 	gap: 1rem;
 
 	.hourly__hour {
@@ -309,22 +410,16 @@ body {
 	}
 
 	.hourly__details {
-		dl {
-			text-transform: uppercase;
-			padding: 7px 0;
-			display: flex;
-			justify-content: space-between;
-			font-size: clamp(1.2rem, 1.2vw, 2.4rem);
-			dd {
-				padding: 0 3px;
-			}
-		}
+		text-transform: uppercase;
+		display: flex;
+		flex-wrap: wrap;
+		gap: 1.6rem;
 	}
 }
 
 // daily weather
 #weather-daily-container {
-	@media screen and (max-width: 740px){
+	@media screen and (max-width: 740px) {
 		flex-wrap: nowrap;
 	}
 	display: flex;
@@ -347,19 +442,6 @@ body {
 	justify-content: center;
 	height: 100%;
 
-	dl {
-		text-align: center;
-
-		dt {
-			font: normal bold;
-			font-size: clamp(1rem, 1vw, 2rem);
-		}
-
-		dd {
-			font: normal 300;
-			font-size: clamp(1.5rem, 1.8vw, 3rem);
-		}
-	}
 	.daily__date {
 		grid-row: 1/2;
 	}

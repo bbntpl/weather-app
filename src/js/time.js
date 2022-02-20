@@ -71,12 +71,15 @@ const formatShortDate = (date) => date.toLocaleDateString('en-US', DAILY);
 
 const updateClock = (el) => {
 	const clockDisplay = el;
-	const { timezone } = Weather.fetchWeatherData();
-	const date = convertTZ(new Date(), timezone);
+	let tz;
+	if (Weather.getWeatherData().length) {
+		tz = Weather.getWeatherData().timezone;
+	} else {
+		setTimeout(() => updateClock(el), 1000);
+	}
+	const date = convertTZ(new Date(), tz);
 	clockDisplay.textContent = formatHourMin(date);
-	setTimeout(() => {
-		updateClock(el);
-	}, 1000);
+	setTimeout(() => updateClock(el), 1000);
 };
 
 export {
