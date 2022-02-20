@@ -1,4 +1,21 @@
-import Weather from './weather';
+const Timer = (() => {
+	let isTimerRunning = false;
+	let _clock = null;
+	const setClock = (passedClock) => {
+		_clock = passedClock;
+	};
+	const clearClock = () => clearTimeout(_clock);
+	const disableTimer = () => {
+		clearClock();
+		isTimerRunning = false;
+	};
+	return {
+		isTimerRunning,
+		setClock,
+		clearClock,
+		disableTimer,
+	};
+})();
 
 // convert dates by the appropriate local timezone
 // object used to format dates
@@ -69,17 +86,12 @@ const getLocalHours = (date) => date.getHours();
 const formatFullDate = (date) => date.toLocaleDateString('en-US', OPTIONS);
 const formatShortDate = (date) => date.toLocaleDateString('en-US', DAILY);
 
-const updateClock = (el) => {
+const updateClock = (el, tz) => {
+	Timer.isTimerRunning = true;
 	const clockDisplay = el;
-	let tz;
-	if (Weather.getWeatherData().length) {
-		tz = Weather.getWeatherData().timezone;
-	} else {
-		setTimeout(() => updateClock(el), 1000);
-	}
 	const date = convertTZ(new Date(), tz);
 	clockDisplay.textContent = formatHourMin(date);
-	setTimeout(() => updateClock(el), 1000);
+	Timer.setClock(setTimeout(() => updateClock(el, tz), 1000));
 };
 
 export {
@@ -90,5 +102,6 @@ export {
 	formatShortDate,
 	getLocalHours,
 	getLocalDate,
+	Timer,
 	updateClock,
 };

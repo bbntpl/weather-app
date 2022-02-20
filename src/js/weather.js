@@ -1,5 +1,4 @@
 import { whitespaceReplacer, hasSpaces, loadJson } from '../helpers';
-import DOM from './dom-collections';
 
 // module pattern that arranges the fetched data using API in
 // particular different uses
@@ -9,6 +8,12 @@ const Weather = (() => {
 		weather: 'fa65f5a4f35f8c9a4cd735a6794af915',
 		location: 'pk.960bef9b58caf12f4d456466ec2a42f8',
 	};
+	const LOCATION_TYPE = [
+		'continent',
+		'city',
+		'suburb',
+		'administrative',
+	];
 
 	// default location after window loaded
 	let weatherData;
@@ -16,7 +21,6 @@ const Weather = (() => {
 	let lon = 2.15;
 	let searchArea;
 	let areaName = 'Barcelona, Spain';
-
 	const setCoordinates = (nLat, nLon) => {
 		lat = nLat;
 		lon = nLon;
@@ -31,7 +35,7 @@ const Weather = (() => {
 	};
 
 	const setLocationName = (locationName) => {
-		setSearchArea(whitespaceReplacer(locationName));
+		setSearchArea(whitespaceReplacer(locationName, '+'));
 		setAreaName(locationName);
 	};
 
@@ -62,7 +66,7 @@ const Weather = (() => {
 			.catch((error) => {
 				throw new Error(error);
 			});
-
+		console.log(`Inside fetchWeatherData():${getLat()}, ${getLon()}`);
 		return response;
 	};
 
@@ -86,8 +90,9 @@ const Weather = (() => {
 
 	const getAreaFromCoordinates = async () => {
 		loadJson(getGeocodeURL())
-			.then((location) => {
-				assignUserLocation(location);
+			.then((geocode) => {
+				assignUserLocation(geocode);
+				fetchWeatherData();
 			})
 			.catch((error) => {
 				throw new Error(`Error: ${error}`);
@@ -101,19 +106,27 @@ const Weather = (() => {
 		getAreaFromCoordinates();
 	};
 
-	function displayWeatherDataByInput() {
-		const locationName = DOM.searchbarInput.value;
-		if (!locationName) return;
-		fetchWeatherData();
-	}
+	const getCoordinatesFromAreaName = () => {
+		loadJson(getLocationURL())
+			.then((location) => {
+				const idealLocation = location.find((place) => LOCATION_TYPE.includes(place.type));
+				const { lat, lon, display_name } = idealLocation;
+				setCoordinates(lat, lon);
+				setAreaName(display_name);
+				console.log(`Inside getCoordinatesFromAreaName():${getLat()}, ${getLon()}`);
+			})
+			.catch((error) => {
+				throw new Error(`Error: ${error}`);
+			});
+	};
 
 	return {
-		displayWeatherDataByInput,
 		fetchCoordinatesToGetArea,
 		fetchWeatherData,
 		getLat,
 		getLon,
 		getAreaName,
+		getCoordinatesFromAreaName,
 		getWeatherData,
 		getWeatherIcon,
 		getWeatherURL,

@@ -156,6 +156,8 @@ dl {
 		inset -50.9px 50.9px 50.9px rgba(255, 255, 255, 0.144);
 	backdrop-filter: blur(48.864px);
 	position: sticky;
+	top: 0;
+	z-index: 5000;
 	.nav {
 		@media screen and (max-width: 420px) {
 			justify-content: center;
@@ -227,7 +229,8 @@ dl {
 #loading {
 	z-index: 1000;
 	background-color: #fff;
-	position: relative;
+	position: fixed;
+	width: 100%;
 }
 
 #loading-icon {

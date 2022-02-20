@@ -2,7 +2,11 @@ import './scss/reset.scss';
 import './scss/styles.scss';
 import DOM from './js/dom-collections';
 import Weather from './js/weather';
-import { showCurrentWeather, displayFetchedWeatherData } from './js/view';
+import {
+	showCurrentWeather,
+	displayFetchedWeatherData,
+	displayWeatherDataByInput,
+} from './js/view';
 import { currentUnitIsCelcius, toggleTemp } from './js/units';
 import { toggleHeaderBgColor } from './js/UI';
 
@@ -26,14 +30,12 @@ DOM.locationIcon.onclick = () => {
 
 DOM.searchbar.addEventListener('submit', (e) => {
 	e.preventDefault();
-	Weather.displayWeatherDataByInput();
-	displayFetchedWeatherData();
+	displayWeatherDataByInput();
 });
 
 DOM.searchbarBtn.addEventListener('click', (e) => {
 	e.preventDefault();
-	Weather.displayWeatherDataByInput();
-	displayFetchedWeatherData();
+	displayWeatherDataByInput();
 });
 
 // toggle between celcius and fahrenheit

@@ -27,6 +27,7 @@
 			"error",
 			"tab"
 		],
+		"no-shadow": ["error", { "allow": ["lat", "lon"] }],
 		"no-tabs": 0,
 		"no-underscore-dangle": 0
 	}

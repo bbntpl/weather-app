@@ -2,7 +2,8 @@ import DOM from './dom-collections';
 import { toggleElementClassName } from '../helpers';
 
 export function toggleHeaderBgColor() {
-	if (document.body.scrollTop > 80 || DOM.header.scrollTop > 80) {
+	const top = window.pageYOffset || DOM.header.scrollTop;
+	if (top > 5) {
 		toggleElementClassName(DOM.header, { rmv: 'nav-glassy', add: 'nav-dark' });
 	} else {
 		toggleElementClassName(DOM.header, { rmv: 'nav-dark', add: 'nav-glassy' });

@@ -6,8 +6,23 @@ module.exports = {
 	module: {
 		rules: [
 			{
-				test: /.s?css$/,
-				use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
+				test: /\.((s[ac]|c)ss)$/i,
+				use: [
+					MiniCssExtractPlugin.loader,
+					'css-loader',
+					'sass-loader',
+					{
+						loader: 'postcss-loader',
+						options: {
+							sourceMap: true,
+							postcssOptions: {
+								plugins: [
+									['autoprefixer'],
+								],
+							},
+						},
+					},
+				],
 			},
 			{
 				test: /\.html$/i,

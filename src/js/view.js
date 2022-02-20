@@ -15,6 +15,7 @@ import {
 	updateClock,
 	getLocalDate,
 	getLocalHours,
+	Timer,
 } from './time';
 import {
 	convertMeterToKilometer,
@@ -32,6 +33,7 @@ function beforeDisplayWeatherData() {
 		add: 'nav-dark',
 	});
 	unhideLoadingElement();
+	document.body.style.overflow = 'hidden';
 }
 
 function afterDisplayWeatherData() {
@@ -40,6 +42,7 @@ function afterDisplayWeatherData() {
 		add: 'nav-glassy',
 	});
 	hideLoadingElement();
+	document.body.style.overflow = 'auto';
 }
 
 function displayWeatherDetails(currentEntries) {
@@ -50,7 +53,7 @@ function displayWeatherDetails(currentEntries) {
 	appendChildren(DOM.currentAdditionalInfo, weatherDetails);
 }
 
-function displayCurrentWeather(weatherData) {
+function displayCurrentWeather(weatherData, timezone) {
 	const {
 		humidity,
 		wind_speed,
@@ -60,10 +63,15 @@ function displayCurrentWeather(weatherData) {
 		visibility,
 		dew_point,
 	} = weatherData;
+	const date = convertTZ(new Date(), timezone);
+	if (Timer.isTimerRunning) {
+		Timer.disableTimer();
+	}
+	updateClock(DOM.currentTime, timezone);
 	DOM.currentLocation.textContent = Weather.getAreaName();
-	updateClock(DOM.currentTime);
-	DOM.currentDate.textContent = formatFullDate(new Date());
+	DOM.currentDate.textContent = formatFullDate(date);
 	DOM.currentTemp.textContent = convertTemp(temp);
+
 	const currentEntries = [
 		['feels like', convertTemp(feels_like)],
 		['humidity', `${humidity}%`],
@@ -115,7 +123,6 @@ function displayDailyWeather(dailyWeatherData) {
 }
 
 const isWeatherDataDisplayed = (elNodes) => elNodes.every((el) => el.hasChildNodes());
-
 function removeWeatherDetails() {
 	const weatherDetailsElements = [
 		DOM.currentAdditionalInfo,
@@ -138,7 +145,7 @@ function displayWeatherHeroImage(weatherData) {
 function displayWeatherData(weatherData) {
 	const { hourly, daily, current } = weatherData;
 	removeWeatherDetails();
-	displayCurrentWeather(current);
+	displayCurrentWeather(current, weatherData.timezone);
 	displayHourlyWeather(hourly.slice(1, 25));
 	displayDailyWeather(daily.slice(1));
 }
@@ -158,6 +165,14 @@ function displayFetchedWeatherData() {
 	});
 }
 
+function displayWeatherDataByInput() {
+	const locationName = DOM.searchbarInput.value;
+	if (!locationName) return;
+	Weather.setLocationName(locationName);
+	Weather.getCoordinatesFromAreaName();
+	displayFetchedWeatherData();
+}
+
 function showCurrentWeather() {
 	if (typeof Weather.getWeatherData() !== 'undefined') {
 		displayExistingWeatherData();
@@ -170,9 +185,10 @@ export {
 	showCurrentWeather,
 	beforeDisplayWeatherData,
 	displayCurrentWeather,
+	displayDailyWeather,
 	displayExistingWeatherData,
 	displayFetchedWeatherData,
 	displayHourlyWeather,
-	displayDailyWeather,
+	displayWeatherDataByInput,
 	removeWeatherDetails,
 };
