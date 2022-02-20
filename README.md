@@ -1,6 +1,9 @@
 # Weather 
 A simple weather app built with JavaScript, HTML and SCSS.
 
+### Screenshot
+![weather-app__ss.png](./src/images/weather-app__ss.png)
+
 ### Pre Development
 - Figma - for design visualization
 - Obsidian - project preparation
