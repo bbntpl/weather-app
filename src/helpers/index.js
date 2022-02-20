@@ -68,6 +68,11 @@ function whitespaceReplacer(string, char) {
 // disallow any spaces
 const hasSpaces = (str) => !!str.indexOf(' ') !== -1;
 
+const toggleElementClassName = (el, { rmv, add }) => {
+	el.classList.remove(rmv);
+	el.classList.add(add);
+};
+
 export {
 	appendChildren,
 	childrenMatches,
@@ -76,5 +81,6 @@ export {
 	hasSpaces,
 	removeChildren,
 	loadJson,
+	toggleElementClassName,
 	whitespaceReplacer,
 };

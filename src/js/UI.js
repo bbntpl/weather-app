@@ -1,15 +1,13 @@
 import DOM from './dom-collections';
+import { toggleElementClassName } from '../helpers';
 
 export function toggleHeaderBgColor() {
 	if (document.body.scrollTop > 80 || DOM.header.scrollTop > 80) {
-		DOM.header.classList.remove('nav-glassy');
-		DOM.header.classList.add('nav-dark');
+		toggleElementClassName(DOM.header, { rmv: 'nav-glassy', add: 'nav-dark' });
 	} else {
-		DOM.header.classList.remove('nav-dark');
-		DOM.header.classList.add('nav-glassy');
+		toggleElementClassName(DOM.header, { rmv: 'nav-dark', add: 'nav-glassy' });
 	}
 }
 
 export const hideLoadingElement = () => DOM.loading.classList.add('hide');
-
 export const unhideLoadingElement = () => DOM.loading.classList.remove('hide');

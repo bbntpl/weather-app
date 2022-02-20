@@ -1,6 +1,6 @@
 import DOM from './dom-collections';
 import {
-	appendChildren, removeChildren,
+	appendChildren, removeChildren, toggleElementClassName,
 } from '../helpers';
 import CurrentWeatherDetails from '../components/CurrentWeatherDetails';
 import DailyCard from '../components/DailyCard';
@@ -25,6 +25,22 @@ import {
 } from './units';
 import { hideLoadingElement, unhideLoadingElement } from './UI';
 import getAppropriateWeatherImg from './weather-indicator';
+
+function beforeDisplayWeatherData() {
+	toggleElementClassName(DOM.header, {
+		rmv: 'nav-glassy',
+		add: 'nav-dark',
+	});
+	unhideLoadingElement();
+}
+
+function afterDisplayWeatherData() {
+	toggleElementClassName(DOM.header, {
+		rmv: 'nav-dark',
+		add: 'nav-glassy',
+	});
+	hideLoadingElement();
+}
 
 function displayWeatherDetails(currentEntries) {
 	const weatherDetails = [];
@@ -132,12 +148,12 @@ function displayExistingWeatherData() {
 }
 
 function displayFetchedWeatherData() {
-	unhideLoadingElement();
+	beforeDisplayWeatherData();
 	Weather.fetchWeatherData().then((weatherData) => {
 		displayWeatherHeroImage(weatherData);
 		displayWeatherData(weatherData);
 		setTimeout(() => {
-			hideLoadingElement();
+			afterDisplayWeatherData();
 		}, 1000);
 	});
 }
@@ -152,6 +168,7 @@ function showCurrentWeather() {
 
 export {
 	showCurrentWeather,
+	beforeDisplayWeatherData,
 	displayCurrentWeather,
 	displayExistingWeatherData,
 	displayFetchedWeatherData,
