@@ -7,6 +7,7 @@ import DailyCard from '../components/DailyCard';
 import HourlyCard from '../components/HourlyCard';
 
 import Weather from './weather';
+
 import {
 	formatHourOnly,
 	formatShortDate,
@@ -17,6 +18,7 @@ import {
 	getLocalHours,
 	Timer,
 } from './time';
+
 import {
 	convertMeterToKilometer,
 	convertTemp,
@@ -24,6 +26,7 @@ import {
 	windDegToDir,
 	windSpeedToMPH,
 } from './units';
+
 import { hideLoadingElement, unhideLoadingElement } from './UI';
 import getAppropriateWeatherImg from './weather-indicator';
 
@@ -62,6 +65,7 @@ function displayCurrentWeather(weatherData, timezone) {
 		feels_like,
 		visibility,
 		dew_point,
+		uvi,
 	} = weatherData;
 	const date = convertTZ(new Date(), timezone);
 	if (Timer.isTimerRunning) {
@@ -80,6 +84,7 @@ function displayCurrentWeather(weatherData, timezone) {
 		['pressure', `${pressure}hPa`],
 		['visibility', convertMeterToKilometer(visibility)],
 		['dew point', kelvinToFahrenheit(dew_point)],
+		['uv index', uvi],
 	];
 	displayWeatherDetails(currentEntries);
 }
@@ -154,30 +159,27 @@ function displayExistingWeatherData() {
 	displayWeatherData(Weather.getWeatherData());
 }
 
-function displayFetchedWeatherData() {
+function displayFetchedWeatherData(callback) {
 	beforeDisplayWeatherData();
-	Weather.fetchWeatherData().then((weatherData) => {
+	callback().then((weatherData) => {
 		displayWeatherHeroImage(weatherData);
 		displayWeatherData(weatherData);
-		setTimeout(() => {
-			afterDisplayWeatherData();
-		}, 1000);
+		setTimeout(() => afterDisplayWeatherData(), 500);
 	});
 }
 
-function displayWeatherDataByInput() {
+function displayWeatherDataByInput(callback) {
 	const locationName = DOM.searchbarInput.value;
 	if (!locationName) return;
 	Weather.setLocationName(locationName);
-	Weather.getCoordinatesFromAreaName();
-	displayFetchedWeatherData();
+	displayFetchedWeatherData(callback);
 }
 
 function showCurrentWeather() {
 	if (typeof Weather.getWeatherData() !== 'undefined') {
 		displayExistingWeatherData();
 	} else {
-		displayFetchedWeatherData();
+		displayFetchedWeatherData(Weather.fetchWeatherData);
 	}
 }
 

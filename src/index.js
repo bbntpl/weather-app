@@ -4,8 +4,8 @@ import DOM from './js/dom-collections';
 import Weather from './js/weather';
 import {
 	showCurrentWeather,
-	displayFetchedWeatherData,
 	displayWeatherDataByInput,
+	displayFetchedWeatherData,
 } from './js/view';
 import { currentUnitIsCelcius, toggleTemp } from './js/units';
 import { toggleHeaderBgColor } from './js/UI';
@@ -21,8 +21,10 @@ window.onscroll = () => {
 // EVENT LISTENERS
 DOM.locationIcon.onclick = () => {
 	if (navigator.geolocation) {
-		navigator.geolocation.getCurrentPosition(Weather.fetchCoordinatesToGetArea);
-		displayFetchedWeatherData();
+		navigator.geolocation.getCurrentPosition(Weather.displayWeatherWithCoordinates);
+		setTimeout(() => {
+			displayFetchedWeatherData(Weather.fetchWeatherData);
+		}, 1000);
 	} else {
 		throw new Error('Geolocation is not supported by this browser');
 	}
@@ -30,12 +32,12 @@ DOM.locationIcon.onclick = () => {
 
 DOM.searchbar.addEventListener('submit', (e) => {
 	e.preventDefault();
-	displayWeatherDataByInput();
+	displayWeatherDataByInput(Weather.displayWeatherWithAreaName);
 });
 
 DOM.searchbarBtn.addEventListener('click', (e) => {
 	e.preventDefault();
-	displayWeatherDataByInput();
+	displayWeatherDataByInput(Weather.displayWeatherWithAreaName);
 });
 
 // toggle between celcius and fahrenheit

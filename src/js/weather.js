@@ -66,7 +66,6 @@ const Weather = (() => {
 			.catch((error) => {
 				throw new Error(error);
 			});
-		console.log(`Inside fetchWeatherData():${getLat()}, ${getLon()}`);
 		return response;
 	};
 
@@ -88,45 +87,38 @@ const Weather = (() => {
 		}
 	};
 
-	const getAreaFromCoordinates = async () => {
-		loadJson(getGeocodeURL())
-			.then((geocode) => {
-				assignUserLocation(geocode);
-				fetchWeatherData();
-			})
-			.catch((error) => {
-				throw new Error(`Error: ${error}`);
-			});
-	};
-
-	// using the coordinates to get the proper area
-	const fetchCoordinatesToGetArea = (pos) => {
+	const displayWeatherWithCoordinates = async (pos) => {
+		console.log(pos);
 		const { latitude, longitude } = pos.coords;
 		setCoordinates(latitude, longitude);
-		getAreaFromCoordinates();
+		try {
+			const geocode = await loadJson(getGeocodeURL());
+			assignUserLocation(geocode);
+			return await fetchWeatherData();
+		} catch (error) {
+			throw new Error(`Error: ${error}`);
+		}
 	};
 
-	const getCoordinatesFromAreaName = () => {
-		loadJson(getLocationURL())
-			.then((location) => {
-				const idealLocation = location.find((place) => LOCATION_TYPE.includes(place.type));
-				const { lat, lon, display_name } = idealLocation;
-				setCoordinates(lat, lon);
-				setAreaName(display_name);
-				console.log(`Inside getCoordinatesFromAreaName():${getLat()}, ${getLon()}`);
-			})
-			.catch((error) => {
-				throw new Error(`Error: ${error}`);
-			});
-	};
+	const displayWeatherWithAreaName = () => loadJson(getLocationURL())
+		.then((location) => {
+			const idealLocation = location.find((place) => LOCATION_TYPE.includes(place.type));
+			const { lat, lon, display_name } = idealLocation;
+			setCoordinates(lat, lon);
+			setAreaName(display_name);
+			return fetchWeatherData();
+		})
+		.catch((error) => {
+			throw new Error(`Error: ${error}`);
+		});
 
 	return {
-		fetchCoordinatesToGetArea,
+		displayWeatherWithCoordinates,
 		fetchWeatherData,
 		getLat,
 		getLon,
 		getAreaName,
-		getCoordinatesFromAreaName,
+		displayWeatherWithAreaName,
 		getWeatherData,
 		getWeatherIcon,
 		getWeatherURL,

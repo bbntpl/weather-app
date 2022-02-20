@@ -34,5 +34,5 @@ export default function getAppropriateWeatherImg(hours, weather) {
 		}
 		return weatherStates.find((w) => currentWeatherState.includes(w));
 	}
-	return 'morning-clear';
+	return weatherByHours(hours, 'clear');
 }

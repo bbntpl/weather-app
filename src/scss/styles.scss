@@ -330,9 +330,7 @@ dl {
 	grid-template-columns: repeat(autofit, min(100px, 100%));
 	grid-auto-flow: column;
 	grid-gap: 0 40px;
-	align-items: center;
 	max-width: 100%;
-	justify-content: space-between;
 	overflow-x: auto;
 	overflow-y: hidden;
 	text-transform: uppercase;
