@@ -1,6 +1,9 @@
 const { merge } = require('webpack-merge');
-
 const commonConfig = require('./config/webpack.common');
-const envConfig = process.env.MODE === 'production' ? require('./config/webpack.prod.js') : require('./config/webpack.dev.js');
+const devConfig = require('./config/webpack.dev');
+const prodConfig = require('./config/webpack.prod');
+
+// doesn't erally work - just a reference in the future
+const envConfig = process.env.MODE === 'development' ? devConfig : prodConfig;
 
 module.exports = merge(commonConfig, envConfig);

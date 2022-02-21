@@ -5,7 +5,7 @@ import { whitespaceReplacer, hasSpaces, loadJson } from '../helpers';
 const Weather = (() => {
 	const EXCLUDE = 'minutely';
 	const API_KEY = {
-		weather: 'fa65f5a4f35f8c9a4cd735a6794af915',
+		weather: '0c73b72398c0bfc8c59ca8058faf1eb4',
 		location: 'pk.960bef9b58caf12f4d456466ec2a42f8',
 	};
 	const LOCATION_TYPE = [
@@ -87,14 +87,12 @@ const Weather = (() => {
 		}
 	};
 
-	const displayWeatherWithCoordinates = async (pos) => {
-		console.log(pos);
+	const displayWeatherWithCoordinates = (pos) => {
 		const { latitude, longitude } = pos.coords;
 		setCoordinates(latitude, longitude);
 		try {
-			const geocode = await loadJson(getGeocodeURL());
+			const geocode = loadJson(getGeocodeURL());
 			assignUserLocation(geocode);
-			return await fetchWeatherData();
 		} catch (error) {
 			throw new Error(`Error: ${error}`);
 		}

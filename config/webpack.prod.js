@@ -6,34 +6,42 @@ module.exports = {
 	module: {
 		rules: [
 			{
-				test: /\.((s[ac]|c)ss)$/i,
+				test: /\.s?css$/i,
 				use: [
 					MiniCssExtractPlugin.loader,
 					'css-loader',
-					'sass-loader',
 					{
 						loader: 'postcss-loader',
 						options: {
-							sourceMap: true,
 							postcssOptions: {
 								plugins: [
-									['autoprefixer'],
+									[
+										'autoprefixer',
+									],
 								],
 							},
 						},
 					},
+					'sass-loader',
 				],
-			},
-			{
-				test: /\.html$/i,
-				type: 'asset/resource',
 			},
 		],
 	},
 	optimization: {
 		minimizer: [
-			new CssMinimizerPlugin(),
-			new HtmlMinimizerPlugin(),
+			new CssMinimizerPlugin({
+				minimizerOptions: {
+					preset: [
+						'default',
+						{
+							discardComments: { removeAll: true },
+						},
+					],
+				},
+			}),
+			new HtmlMinimizerPlugin({
+				test: /\.html$/i,
+			}),
 		],
 	},
 	plugins: [
