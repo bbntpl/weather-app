@@ -3,9 +3,10 @@ import { toggleElementClassName } from '../helpers';
 
 export function toggleHeaderBgColor() {
 	const top = window.pageYOffset || DOM.header.scrollTop;
-	if (top > 5) {
+	if (top > 5 && DOM.header.classList.contains('nav-glassy')) {
 		toggleElementClassName(DOM.header, { rmv: 'nav-glassy', add: 'nav-dark' });
-	} else {
+	}
+	if (top < 5 && DOM.header.classList.contains('nav-dark')) {
 		toggleElementClassName(DOM.header, { rmv: 'nav-dark', add: 'nav-glassy' });
 	}
 }

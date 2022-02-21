@@ -1,6 +1,6 @@
 /***** GLOBAL VARIABLES *****/
 //fonts
-$default-font: "Ubuntu", monospace, sans-serif;
+$default-font: "Ubuntu", Arial, monospace, sans-serif;
 
 //colors
 $color-cod-gray: #1c1c1c;
@@ -440,7 +440,7 @@ dl {
 
 .weather-daily-card {
 	@include glassy-effect();
-	min-width: 201px;
+	min-width: 195px;
 	padding: 2rem;
 	display: grid;
 	grid-template-rows: 1fr 2fr 2fr 3fr;

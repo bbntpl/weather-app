@@ -91,8 +91,11 @@ const Weather = (() => {
 		const { latitude, longitude } = pos.coords;
 		setCoordinates(latitude, longitude);
 		try {
-			const geocode = loadJson(getGeocodeURL());
-			assignUserLocation(geocode);
+			loadJson(getGeocodeURL())
+				.then((geocode) => {
+					assignUserLocation(geocode);
+					fetchWeatherData();
+				});
 		} catch (error) {
 			throw new Error(`Error: ${error}`);
 		}

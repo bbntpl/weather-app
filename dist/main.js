@@ -793,8 +793,11 @@ const Weather = (() => {
 		const { latitude, longitude } = pos.coords;
 		setCoordinates(latitude, longitude);
 		try {
-			const geocode = loadJson(getGeocodeURL());
-			assignUserLocation(geocode);
+			loadJson(getGeocodeURL())
+				.then((geocode) => {
+					assignUserLocation(geocode);
+					fetchWeatherData();
+				});
 		} catch (error) {
 			throw new Error(`Error: ${error}`);
 		}
@@ -1075,9 +1078,10 @@ const windDegToDir = (n) => {
 
 function toggleHeaderBgColor() {
 	const top = window.pageYOffset || dom_collections.header.scrollTop;
-	if (top > 5) {
+	if (top > 5 && dom_collections.header.classList.contains('nav-glassy')) {
 		toggleElementClassName(dom_collections.header, { rmv: 'nav-glassy', add: 'nav-dark' });
-	} else {
+	}
+	if (top < 5 && dom_collections.header.classList.contains('nav-dark')) {
 		toggleElementClassName(dom_collections.header, { rmv: 'nav-dark', add: 'nav-glassy' });
 	}
 }
