@@ -50,7 +50,11 @@ dl {
 /***** REUSABLE STYLES *****/
 @mixin glassy-effect {
 	background-color: rgba(196, 196, 196, 0.2);
-	backdrop-filter: blur(248.4px);
+}
+
+@mixin glassy-blur-effect {
+	background-color: rgba(196, 196, 196, 0.2);
+	backdrop-filter: blur(40px);
 }
 
 @mixin bg-cover {
