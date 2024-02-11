@@ -31,15 +31,15 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/bvrbryn445/weather-app.git"
+		"url": "git+https://github.com/bbntpl/weather-app.git"
 	},
 	"keywords": [],
 	"author": "",
 	"license": "ISC",
 	"bugs": {
-		"url": "https://github.com/bvrbryn445/weather-app/issues"
+		"url": "https://github.com/bbntpl/weather-app/issues"
 	},
-	"homepage": "https://github.com/bvrbryn445/weather-app#readme",
+	"homepage": "https://github.com/bbntpl/weather-app#readme",
 	"browserslist": [
 		"defaults",
 		"not IE 11",
